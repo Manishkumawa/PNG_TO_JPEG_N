@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNG To JPEG</title>
+    <meta name="description" content="Convert your images to PNG format easily with our free online Image to PNG Converter tool.">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: blue;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 800px;
+        }
+        .converter {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .converter h2 {
+            color: green;
+        }
+        
+        .converter button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.7s ease;
+            font-size: 18px;
+            
+        }
+        .converter button:hover {
+            background-color: red;
+        }
+        footer {
+            background-color: blue;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .convertButton{
+            left:20%;
+        }
+    </style>
+    <link rel="canonical" href="https://example.com/image-to-png-converter">
+    <meta name="robots" content="index, follow">
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebApplication",
+      "name": "Image to PNG Converter",
+      "description": "Convert your images to PNG format easily with our free online Image to PNG Converter tool.",
+      "url": "https://example.com/image-to-png-converter",
+      "applicationCategory": "Utility",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+</head>
+<body>
+
+<header>
+    <h2>PNG to JPEG Converter - An Online Tool</h2>
+</header>
+
+
+
+<div class="container">
+    <div class="converter">
+       <h2> Select your image</h2>
+        
+        <form id="imageForm">
+            <input type="file" id="imageInput" accept="image/*" style="display: none;" aria-label="Select Image" onchange="previewImages(event)">
+            <button type="button" onclick="document.getElementById('imageInput').click();">Select Image</button>
+
+            
+        </form>
+        
+        <br>
+        <br>
+        <br>
+        
+        <button id="convertButton" style="display:none;">Convert to JPEG</button>
+        
+    </div>
+</div>
+
+<footer>
+    &copy; 2024 Online Converter. All rights reserved.
+</footer>
+
+<script>
+    function previewImages(event) {
+        var preview = document.getElementById('imagePreview');
+        preview.innerHTML = '';
+        var files = event.target.files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                var image = new Image();
+                image.src = event.target.result;
+                image.style.maxWidth = '200px';
+                preview.appendChild(image);
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('convertButton').style.display = 'block';
+    }
+
+    document.getElementById('imageInput').addEventListener('change', function() {
+        var file = this.files[0];
+        if (file) {
+            var image = new Image();
+            image.src = URL.createObjectURL(file);
+            image.onload = function() {
+                document.getElementById('convertButton').style.display = 'block';
+            };
+        }
+    });
+
+    document.getElementById('convertButton').addEventListener('click', function() {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        var image = new Image();
+        image.src = URL.createObjectURL(document.getElementById('imageInput').files[0]);
+        image.onload = function() {
+            canvas.width = this.width;
+            canvas.height = this.height;
+            ctx.drawImage(image, 0, 0);
+            var jpegDataURL = canvas.toDataURL('image/jpeg'); // Change MIME type to 'image/jpeg'
+            var downloadLink = document.createElement('a');
+            downloadLink.href = jpegDataURL;
+            downloadLink.download = 'converted_image.jpeg'; // Change extension to .jpeg
+            downloadLink.click();
+        };
+    });
+</script>
+
+</body>
+</html>
